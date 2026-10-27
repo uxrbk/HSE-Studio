@@ -11,11 +11,19 @@ Rust 负责串口 I/O，前端只负责渲染，因此长时间、高速率收�
 
 | 深色主题 | 浅色主题 |
 | :---: | :---: |
-| ![深色主题](assets/screenshot-dark.png) | ![浅色主题](assets/screenshot-light.png) |
+| ![深色主题](assets/screenshot-dark-zh.png) | ![浅色主题](assets/screenshot-light-zh.png) |
 
 *文本 + HEX 双视图*
 
-![文本与 HEX 双视图](assets/screenshot-hex.png)
+![文本与 HEX 双视图](assets/screenshot-hex-zh.png)
+
+*英文界面*
+
+![英文界面](assets/screenshot-en.png)
+
+*偏好设置 —— 界面语言可随时切换*
+
+![偏好设置](assets/screenshot-settings-zh.png)
 
 以上截图均使用内置演示设备录制，无需任何硬件即可复现。
 
@@ -62,10 +70,41 @@ Rust 负责串口 I/O，前端只负责渲染，因此长时间、高速率收�
 
 ### 其它
 
+- **多语言**：简体中文 / English，可在标题栏一键切换，或在设置中选择
 - 深色 / 浅色 / 跟随系统三种主题
 - 所有设置、快捷指令、发送历史本地持久化
 - 本地回环（收到的数据原样回发）、发送 Break 信号、复制最近 20 行记录
 - 完整键盘快捷键
+
+## 多语言
+
+界面完整支持**简体中文**与 **English** 两种语言，覆盖所有界面文案、提示消息、对话框标题，
+以及后端返回的错误信息与演示设备的命令输出。
+
+### 切换方式
+
+| 位置 | 说明 |
+| --- | --- |
+| 标题栏 `EN` / `中` 按钮 | 一键切换，立即生效 |
+| 设置 → 界面语言 | 跟随系统 / 安装程序、简体中文、English |
+
+选择会保存在本地，下次启动继续沿用。
+
+### 安装时选择语言
+
+安装程序内置语言选择对话框（简体中文 / English）。**安装时选择的语言，就是软件首次启动时
+使用的语言**，无需再手动切换。
+
+实现分两步：
+
+1. 安装程序通过 `tauri.conf.json` 中的 `"languages": ["SimpChinese", "English"]` 与
+   `displayLanguageSelector: true` 打开 NSIS 语言选择对话框。
+2. 安装钩子把所选语言写入 `HKCU\Software\alan\HCE Serial Studio\Installer Language`
+   （`2052` = 简体中文，`1033` = English）。启动时后端通过 `app_info` 以 `installLanguage`
+   返回该值，前端在尚未保存过显式选择时采用它。
+
+语言解析顺序为：全新安装时以安装程序语言优先，其次才是软件内的显式选择，最后回退到操作系统
+语言。
 
 ## 性能
 
@@ -117,8 +156,8 @@ Rust 负责串口 I/O，前端只负责渲染，因此长时间、高速率收�
 
 Windows 安装包随仓库提供：
 
-- **[HSE Serial Studio v1.0.1（x64）](<HSE Serial Studio/HCE Serial Studio_1.0.1_x64-setup.exe>)** —
-  1.57 MB，文件名 `HCE Serial Studio_1.0.1_x64-setup.exe`
+- **[HSE Serial Studio v1.0.2（x64）](<HSE Serial Studio/HCE Serial Studio_1.0.2_x64-setup.exe>)** —
+  1.59 MB，文件名 `HCE Serial Studio_1.0.2_x64-setup.exe`
 
 系统要求：Windows 10/11 x64，需要 WebView2 运行时（Windows 11 及较新的 Windows 10 已内置）。
 如缺失，请先安装 [WebView2 运行时](https://developer.microsoft.com/microsoft-edge/webview2/)。
@@ -131,7 +170,7 @@ Windows 安装包随仓库提供：
 README.md            英文文档
 README.zh-CN.md      中文文档（本文件）
 assets/              应用截图与捐赠收款码
-HSE Serial Studio/   Windows 安装包（v1.0.1）
+HSE Serial Studio/   Windows 安装包（v1.0.2）
 ```
 
 ## 说明

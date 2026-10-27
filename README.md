@@ -19,6 +19,14 @@ block for seconds.
 
 ![Text and HEX dual view](assets/screenshot-hex.png)
 
+*Simplified Chinese interface*
+
+![Simplified Chinese interface](assets/screenshot-dark-zh.png)
+
+*Preferences — the interface language can be switched at any time*
+
+![Preferences](assets/screenshot-settings-en.png)
+
 All screenshots show the built-in demo device, so you can reproduce them without any hardware.
 
 ## Features
@@ -68,10 +76,44 @@ All screenshots show the built-in demo device, so you can reproduce them without
 
 ### General
 
+- **Two interface languages**: Simplified Chinese and English, switchable from the title bar or the
+  preferences dialog
 - Dark / light / follow-system themes
 - Everything persisted locally: settings, quick commands and send history
 - Local loopback (echo received bytes back), send a Break signal, copy the most recent 20 log lines
 - Full keyboard shortcut coverage
+
+## Languages
+
+The interface is fully translated into **Simplified Chinese** and **English**. The translation covers
+every UI string, toast message and dialog title, as well as backend error messages and the demo
+device's command output.
+
+### Switching
+
+| Where | What it does |
+| --- | --- |
+| `EN` / `中` button in the title bar | Toggles instantly, without restarting |
+| Preferences → Language | Follow system / installer, Simplified Chinese, English |
+
+The choice is stored locally and reused on the next launch.
+
+### Choosing a language at install time
+
+The installer ships a language picker (Simplified Chinese / English). **The language selected during
+installation becomes the language of the first launch**, so no manual switch is needed afterwards.
+
+That works in two steps:
+
+1. The Windows installer is configured with `"languages": ["SimpChinese", "English"]` and
+   `displayLanguageSelector: true` in `tauri.conf.json`, which turns on the NSIS language dialog.
+2. An installer hook records the selection as `HKCU\Software\alan\HCE Serial Studio\Installer
+   Language` (`2052` = Simplified Chinese, `1033` = English). On startup the backend exposes it
+   through `app_info` as `installLanguage`, and the front end uses it when no explicit choice has
+   been saved yet.
+
+The resolution order is: the installer's language on a fresh install, then an explicit in-app
+choice, then the operating system locale.
 
 ## Performance
 
@@ -124,8 +166,8 @@ With a deliberately slow 5.2 s port opening the main thread's longest stall stay
 
 The Windows installer ships in this repository:
 
-- **[HSE Serial Studio v1.0.1 (x64)](<HSE Serial Studio/HCE Serial Studio_1.0.1_x64-setup.exe>)** —
-  1.57 MB, file name `HCE Serial Studio_1.0.1_x64-setup.exe`
+- **[HSE Serial Studio v1.0.2 (x64)](<HSE Serial Studio/HCE Serial Studio_1.0.2_x64-setup.exe>)** —
+  1.59 MB, file name `HCE Serial Studio_1.0.2_x64-setup.exe`
 
 Requirements: Windows 10/11 (x64) with the WebView2 runtime, which is preinstalled on Windows 11
 and current Windows 10 builds. If it is missing, install the
@@ -140,7 +182,7 @@ anyway**.
 README.md            English documentation (this file)
 README.zh-CN.md      Chinese documentation
 assets/              Screenshots and the donation QR code
-HSE Serial Studio/   Windows installer (v1.0.1)
+HSE Serial Studio/   Windows installer (v1.0.2)
 ```
 
 ## Notes
